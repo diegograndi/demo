@@ -1,0 +1,35 @@
+name: ArgoCD CLI Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  argocd-cli-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # 2. Set up ArgoCD CLI
+      - name: Set up ArgoCD CLI
+        uses: imajeetyadav/argocd-cli@v1
+        with:
+          version: "latest" # Specify the desired version of ArgoCD CLI (default is latest)
+
+      # 3. Authenticate with ArgoCD
+      - name: Authenticate ArgoCD
+        run: |
+          argocd login $ARGOCD_SERVER --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD --insecure
+        env:
+          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }} # URL of your ArgoCD server
+          ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }} # ArgoCD username
+          ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }} # ArgoCD password
+
+      # 4. Run ArgoCD CLI Commands
+      - name: Run ArgoCD CLI Commands
+        run: |
+          argocd app list # List all ArgoCD applications
