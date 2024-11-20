@@ -35,6 +35,14 @@ jobs:
           scan-path: "./"
           output-name: "kics-results.json"
 
+      # Docker Login Action
+      - name: Docker Login
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }} # Replace with actual secret
+          password: ${{ secrets.DOCKER_PASSWORD }} # Replace with actual secret
+
       # Docker Build and Push Action
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v6
@@ -57,6 +65,13 @@ jobs:
         with:
           terraform_version: "latest"
 
+      # HashiCorp Vault Action
+      - name: Run HashiCorp Vault
+        uses: hashicorp/vault-action@v3
+        with:
+          url: "https://vault.example.com"
+          method: "token"
+          token: "rando-secret-token" # Replace with actual secret
 
       # Microsoft Setup MSBuild
       - name: Set up MSBuild
@@ -73,6 +88,25 @@ jobs:
           package-version: "1.0.0"
           source-path: "./"
           output-path: "my-package.nupkg"
+
+      # Octopus Deploy: Create Release Action
+      - name: Create Octopus Release
+        uses: octopusdeploy/create-release-action@v3
+        with:
+          server: "https://octopus.example.com"
+          api-key: "rando-secret-api-key" # Replace with actual secret
+          project: "My Project"
+          release-number: "1.0.0"
+
+      # Octopus Deploy: Deploy Release Action
+      - name: Deploy Octopus Release
+        uses: octopusdeploy/deploy-release-action@v3
+        with:
+          server: "https://octopus.example.com"
+          api-key: "rando-secret-api-key" # Replace with actual secret
+          project: "My Project"
+          release-number: "1.0.0"
+          environment: "Production"
 
       # Octopus Deploy: Install Octopus CLI Action
       - name: Install Octopus CLI
