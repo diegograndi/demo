@@ -1,0 +1,22 @@
+name: Test Vulnerable Action
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-vulnerability:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository code
+      - name: Check out repository
+        uses: actions/checkout@v1 # Known to have outdated versions with vulnerabilities
+
+      # Example step with an action using known critical vulnerabilities
+      - name: Run a vulnerable action
+        uses: actions/github-script@4.0.2 # Known older version with potential security issues
+        with:
+          script: |
+            console.log("This action has a known critical vulnerability!");
