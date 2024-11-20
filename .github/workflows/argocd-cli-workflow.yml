@@ -25,9 +25,9 @@ jobs:
         run: |
           argocd login $ARGOCD_SERVER --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD --insecure
         env:
-          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }} # URL of your ArgoCD server
-          ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }} # ArgoCD username
-          ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }} # ArgoCD password
+          ARGOCD_SERVER: "https://random-argocd-server.example.com" # Random placeholder URL
+          ARGOCD_USERNAME: "random_user" # Random username placeholder
+          ARGOCD_PASSWORD: "random_password_123!" # Random password placeholder
 
       # 4. Run ArgoCD CLI Commands
       - name: Run ArgoCD CLI Commands
