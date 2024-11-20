@@ -1,0 +1,79 @@
+name: Test Workflow for Actions with Dependabot
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-actions:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # Aqua Security Trivy Action
+      - name: Run Aqua Security Trivy Action
+        uses: aquasecurity/trivy-action@v0
+        with:
+          image-ref: "nginx:latest"
+          format: "table"
+          ignore-unfixed: true
+
+      # Azure Setup Kubectl
+      - name: Set up Kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          kubectl-version: "latest"
+
+      # Checkmarx KICS GitHub Action
+      - name: Run Checkmarx KICS
+        uses: checkmarx/kics-github-action@v2
+        with:
+          scan-path: "./"
+          output-name: "kics-results.json"
+
+      # Docker Build and Push Action
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: "my-docker-image:latest"
+
+      # Docker Setup Buildx Action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # JFrog Setup JFrog CLI Action
+      - name: Set up JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+
+      # HashiCorp Setup Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "latest"
+
+
+      # Microsoft Setup MSBuild
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      # NuGet Setup
+      - name: Set up NuGet
+        uses: nuget/setup-nuget@v2
+
+      # Octopus Deploy: Create NuGet Package Action
+      - name: Create NuGet Package
+        uses: octopusdeploy/create-nuget-package-action@v3
+        with:
+          package-version: "1.0.0"
+          source-path: "./"
+          output-path: "my-package.nupkg"
+
+      # Octopus Deploy: Install Octopus CLI Action
+      - name: Install Octopus CLI
+        uses: octopusdeploy/install-octopus-cli-action@v3
