@@ -1,0 +1,40 @@
+name: Test NPM Vulnerabilities with Dependabot
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-npm-vulnerabilities:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # 3. Install vulnerable NPM dependencies
+      - name: Install dependencies
+        run: |
+          echo '{
+            "name": "vulnerable-app",
+            "version": "1.0.0",
+            "dependencies": {
+              "lodash": "4.17.19", # Known vulnerability in versions < 4.17.21
+              "debug": "2.6.9"     # Known vulnerability in versions < 4.1.1
+            }
+          }' > package.json
+          npm install
+
+      # 4. Run a simple script
+      - name: Run script
+        run: |
+          echo "console.log('Testing vulnerable dependencies');" > index.js
+          node index.js
