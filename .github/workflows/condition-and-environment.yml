@@ -1,0 +1,37 @@
+name: condition and environment workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: 'job runner'
+        required: true
+        type: choice
+        options:
+          - 'ubuntu-latest'
+          - 'windows-latest'
+
+jobs:
+  first:
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - name: Run after runner selection
+        run: echo "run after selection" >> $GITHUB_OUTPUT
+
+  second:
+    needs: first
+    runs-on: ${{ inputs.runner }}
+    outputs:
+      saved_value: ${{ steps.save-output.outputs.my_value }}  # Define output for the job
+    steps:
+      - name: Save a value in GITHUB_OUTPUT
+        id: save-output
+        run: echo "my_value=Hello from second job" >> $GITHUB_OUTPUT
+
+  third:
+    needs: second
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - name: Use value from second job
+        run: |
+          echo "Reusing value from second job: ${ { needs.second.outputs.saved_value } }"

@@ -1,0 +1,33 @@
+name : selection workflow
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: 'job runner'
+        required: true
+        type: choice
+        options:
+          - 'ubuntu-latest'
+          - 'windows-latest'
+  
+jobs:
+  first:
+    runs-on: ${{inputs.runner}}
+    steps:
+      - name: run after runner selection
+        id: set-output
+        run: echo "run after issue" >> $GITHUB_OUTPUT
+  second:
+    needs:  first
+    runs-on: ${{inputs.runner}}
+    steps:
+      - name: second run after second
+        run: echo "second run after second"
+  third:
+    needs:  second
+    runs-on: ${{inputs.runner}}
+    steps:
+      - name: third run after second
+        run: echo "third run after second"
+        
+      

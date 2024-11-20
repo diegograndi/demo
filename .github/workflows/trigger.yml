@@ -1,0 +1,20 @@
+# .github/workflows/trigger.yml
+name: Trigger Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  trigger_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4  # Ensures repository content is accessible
+
+      - name: Display Trigger Message
+        run: echo "This is the first workflow, manually triggered!"
+
+      - name: Call Follow-up Workflow
+        uses: ./.github/workflows/follow_up.yml@main  # Explicitly add branch reference
+        with:
+          message: "This is the follow-up workflow, triggered by the first workflow!"

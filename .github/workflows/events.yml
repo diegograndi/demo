@@ -1,0 +1,22 @@
+name : events workflow
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+      - 'dev'
+      - 'feature/**'
+    paths:
+      -'**.js' #when a java file it is pushed activate workflow  NB: branches and paths are in AND condition
+  issues:
+    # all issuse start the workflow, it is right define specific types
+    types:
+      - 'opened'
+      - 'closed' 
+jobs:
+  first:
+    runs-on: ubuntu-latest
+    steps:
+      - name: run after issue
+        run: echo "run after issue"
+  

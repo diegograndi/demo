@@ -1,0 +1,22 @@
+name : artifact workflow
+on: workflow_dispatch
+jobs:
+  artifact-upload-download:
+    runs-on: ubuntu-latest
+    steps:
+    - name: create log file
+      run: echo "workflow run - ${date}" > log.txt
+    - name: create log artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: log_file
+        path: log.txt
+    - name: download artifact
+      uses: actions/download-artifact@v4
+      with:
+        #github-token: ${{secrets.GITHUB_TOKEN}}
+        #path: log.txt
+        name: log_file
+        merge-multiple: true
+        
+

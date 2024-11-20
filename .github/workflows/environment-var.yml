@@ -1,0 +1,13 @@
+name : environment workflow
+on: workflow_dispatch
+env:
+  MESSAGE: ${{ vars.MESSAGE }}
+  FILE_PATH: ${{ secrets.FILE_PATH }}
+jobs:
+  environment-vars-secrets:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: create log file
+        run: 
+          echo "${{ env.MESSAGE }}"
+          echo "${{ env.PATH }}"
