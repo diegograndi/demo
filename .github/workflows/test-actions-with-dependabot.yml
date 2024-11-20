@@ -16,7 +16,7 @@ jobs:
 
       # Aqua Security Trivy Action
       - name: Run Aqua Security Trivy Action
-        uses: aquasecurity/trivy-action@v0
+        uses: aquasecurity/trivy-action
         with:
           image-ref: "nginx:latest"
           format: "table"
