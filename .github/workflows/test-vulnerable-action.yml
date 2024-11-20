@@ -16,7 +16,7 @@ jobs:
 
       # Example step with an action using known critical vulnerabilities
       - name: Run a vulnerable action
-        uses: actions/github-script@4.0.2 # Known older version with potential security issues
+        uses: actions/github-script@v7.0.1 # Known older version with potential security issues
         with:
           script: |
             console.log("This action has a known critical vulnerability!");
